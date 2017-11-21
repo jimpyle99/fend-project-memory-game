@@ -1,14 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -23,7 +12,7 @@ function shuffle(array) {
 
     return array;
 }
-
+// Clears the cards from the table
 function clearTable() {
     let elementsToRemove = document.querySelectorAll('.card');
     function removeCards(card) {
@@ -33,6 +22,7 @@ function clearTable() {
     elementsToRemove.forEach(removeCards);
 }
 
+//makes li of cards and appends them to the deck
 function makeDeck(items) {
     let deckGrid = document.querySelector('.deck');
 
@@ -55,25 +45,17 @@ let pauseEvents = false;
 clearTable();
 cardElements = makeDeck(newDeckItems);
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+// adds show element
 function displayCardSymbol(card) {
     card.classList.add('show');
 }
 
+// adds open element
 function addToOpenCards(card) {
     card.classList.add('open');
 }
 
+// checks for match when 2nd card is clicked
 function checkForMatch() {
     let openCards = document.querySelectorAll('.open');
 
@@ -81,7 +63,7 @@ function checkForMatch() {
         return;
     }
 
-    // Check if cards match
+    // Check if cards match and checks for win condition
     if (openCards[0].innerHTML === openCards[1].innerHTML) {
         lockCardsOpen(openCards);
         checkForWin();
@@ -93,6 +75,7 @@ function checkForMatch() {
     incrementCounter();
 }
 
+//removes show and open and adds match element if it matches
 function lockCardsOpen(cards) {
     cards.forEach(function (card) {
         card.classList.remove('show');
@@ -101,6 +84,7 @@ function lockCardsOpen(cards) {
     });
 }
 
+//hides cards if they don't match
 function hideCards(cards) {
     cards.forEach(function (card) {
         card.classList.remove('show');
@@ -109,11 +93,13 @@ function hideCards(cards) {
     pauseEvents = false;
 }
 
+//counter increments after clicking two cards
 function incrementCounter() {
     let counterElement = document.querySelector('.moves');
     counterElement.innerText = parseInt(counterElement.innerText) + 1;
 }
 
+//checks length of array vs length o match for win condiditon
 function checkForWin() {
     let totalCards = document.querySelectorAll('.card').length;
     let totalMatches = document.querySelectorAll('.match').length;
@@ -122,7 +108,7 @@ function checkForWin() {
         alert('You win! Score: ' + document.querySelector('.moves').innerText);
     }
 }
-
+//click event pauses, displays card and checks for match
 function attachEventHandler(cardElement) {
     cardElement.addEventListener('click' , function (event) {
         if (pauseEvents) {
